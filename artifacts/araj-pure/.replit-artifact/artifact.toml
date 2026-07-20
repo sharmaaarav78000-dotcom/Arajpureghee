@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/"
+title = "Araj Pure"
+version = "1.0.0"
+id = "artifacts/araj-pure"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23816
+
+[services.development]
+run = "pnpm --filter @workspace/araj-pure run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/araj-pure", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/araj-pure/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23816"
+BASE_PATH = "/"
