@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Wellbeing | Reduce Screen Time Project</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base Styles & Premium Rainbow Palette */
+        :root {
+            --bg-dark: #0a0a0f; /* Deep Space Dark */
+            --card-bg: rgba(15, 15, 22, 0.65);
+            --text-main: #f8fafc;
+            --text-muted: #a1a1aa;
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --danger: #ff4757;
+            --success: #2ed573;
+            /* Seamless Rainbow Gradient */
+            --rainbow-gradient: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3, #ff0000);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--text-main);
+            background-color: var(--bg-dark);
+            position: relative;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Rainbow Background Animations */
+        @keyframes rainbow-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            100% { transform: translate(40px, 40px) scale(1.15) rotate(10deg); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Ambient Animated Rainbow Glows */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -20%; left: -10%;
+            width: 120vw; height: 120vh;
+            background: var(--rainbow-gradient);
+            background-size: 400% 400%;
+            animation: rainbow-flow 15s ease infinite, float 20s ease-in-out infinite alternate;
+            filter: blur(150px);
+            opacity: 0.15;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Header */
+        header { text-align: center; padding: 5rem 1.5rem 3rem; animation: fadeInUp 0.8s ease-out; }
+        header h1 {
+            margin: 0; font-size: 3.8rem; font-weight: 700; letter-spacing: -1.5px;
+            background: var(--rainbow-gradient);
+            background-size: 300% 300%;
+            animation: rainbow-flow 6s linear infinite;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        header p { font-size: 1.1rem; color: var(--text-muted); max-width: 650px; margin: 1.2rem auto 0; font-weight: 300; line-height: 1.6; }
+        
+        .driving-question {
+            margin-top: 1.5rem; display: inline-block; background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255,255,255,0.2); padding: 0.8rem 1.5rem; border-radius: 50px; 
+            color: #fff; font-weight: 500;
+            box-shadow: 0 0 15px rgba(255,255,255,0.05);
+        }
+
+        /* Layout & Glassmorphism Cards */
+        .container { max-width: 900px; margin: 0 auto 4rem; padding: 0 1.5rem; }
+        .card {
+            background: var(--card-bg); backdrop-filter: blur(25px); padding: 3rem; border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); margin-bottom: 2.5rem;
+            border: 1px solid var(--glass-border); 
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 0.8s ease-out backwards; transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        
+        /* Premium Rainbow Hover Effect for Cards */
+        .card:hover { 
+            transform: translateY(-4px); 
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 0, 0, 0.1), 0 0 40px rgba(0, 0, 255, 0.1); 
+            border-color: rgba(255,255,255,0.3);
+        }
+        
+        h2 { color: #fff; margin-top: 0; font-size: 1.8rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; }
+        h3 { color: #fff; font-size: 1.3rem; margin: 1.5rem 0 0.8rem; font-weight: 500; }
+        .card p, .card li { color: var(--text-muted); font-size: 1rem; font-weight: 300; line-height: 1.7; }
+
+        /* Grids & Lists */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem; }
+        .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+        .impact-box { background: rgba(255, 255, 255, 0.02); padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.3s ease; }
+        .impact-box:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.2); }
+        .impact-box h4 { margin: 0 0 0.8rem 0; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; }
+        .impact-box ul { padding-left: 1.2rem; margin: 0; }
+        .check-list { list-style: none; padding: 0; }
+        .check-list li { position: relative; padding-left: 2rem; margin-bottom: 0.8rem; }
+        .check-list li::before { content: '✔'; position: absolute; left: 0; color: var(--success); font-weight: bold; }
+
+        /* 7-Day Challenge Table */
+        .table-container { overflow-x: auto; margin-top: 1.5rem; }
+        table { width: 100%; border-collapse: collapse; background: rgba(255, 255, 255, 0.02); border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.05); }
+        th, td { padding: 1rem 1.5rem; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        th { background: rgba(255, 255, 255, 0.04); color: #fff; font-weight: 500; }
+        tr:hover td { background: rgba(255, 255, 255, 0.04); }
+
+        /* Input & Buttons */
+        .input-group { display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 2rem; }
+        .input-group label { font-weight: 500; color: #cbd5e1; font-size: 0.95rem; }
+        input[type="number"], input[type="text"] {
+            padding: 1.2rem 1.5rem; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px; font-size: 1.1rem; color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; transition: all 0.3s ease;
+        }
+        input:focus { outline: none; border-color: rgba(255,255,255,0.5); background: rgba(0, 0, 0, 0.6); box-shadow: 0 0 15px rgba(255, 255, 255, 0.1); }
+        
+        button {
+            background: var(--rainbow-gradient);
+            background-size: 300% 300%;
+            animation: rainbow-flow 4s linear infinite;
+            color: #fff; border: none; text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            padding: 1.2rem 2rem; font-size: 1.1rem; font-weight: 700; border-radius: 14px; cursor: pointer; width: 100%;
+            transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+        button:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255, 255, 255, 0.2); filter: brightness(1.1); }
+
+        /* Results & Timer Text */
+        #result { margin-top: 1.5rem; padding: 1.5rem; background-color: rgba(255, 255, 255, 0.03); border-radius: 14px; border: 1px solid var(--glass-border); color: #e2e8f0; display: none; }
+        
+        #timerDisplay { 
+            font-size: 4rem; font-weight: 700; text-align: center; 
+            background: var(--rainbow-gradient);
+            background-size: 300% 300%;
+            animation: rainbow-flow 5s linear infinite;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+            margin-top: 1.5rem; display: none; font-variant-numeric: tabular-nums; 
+        }
+
+        /* Full Screen Lock Overlay */
+        #lockOverlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5, 5, 8, 0.98); backdrop-filter: blur(30px); z-index: 9999; display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; opacity: 0; transition: opacity 0.5s ease; }
+        #lockOverlay.active { opacity: 1; }
+        #lockOverlay h1 { 
+            font-size: 5rem; margin: 0; 
+            background: var(--rainbow-gradient);
+            background-size: 300% 300%;
+            animation: rainbow-flow 3s linear infinite;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        #lockOverlay button { background: transparent; border: 2px solid #fff; color: #fff; width: auto; border-radius: 50px; padding: 1rem 3rem; animation: none; }
+        #lockOverlay button:hover { background: #fff; color: #000; box-shadow: 0 0 30px rgba(255,255,255,0.5); }
+
+        /* ---------------- CHATBOT CSS ---------------- */
+        .chat-widget { position: fixed; bottom: 30px; right: 30px; z-index: 1000; font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        .chat-btn {
+            width: 65px; height: 65px; border-radius: 50%; 
+            background: var(--rainbow-gradient);
+            background-size: 300% 300%;
+            animation: rainbow-flow 5s linear infinite;
+            box-shadow: 0 10px 35px rgba(255, 255, 255, 0.2); display: flex; justify-content: center; align-items: center;
+            font-size: 1.8rem; color: #fff; cursor: pointer; transition: transform 0.3s ease; border: 2px solid rgba(255,255,255,0.3);
+        }
+        .chat-btn:hover { transform: scale(1.1); box-shadow: 0 15px 45px rgba(255, 255, 255, 0.4); }
+
+        .chat-window {
+            position: absolute; bottom: 85px; right: 0; width: 370px; height: 520px;
+            background: rgba(15, 15, 22, 0.95); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 24px; box-shadow: 0 25px 60px rgba(0,0,0,0.8); display: flex; flex-direction: column;
+            opacity: 0; pointer-events: none; transform: translateY(20px); transition: all 0.3s ease; overflow: hidden;
+        }
+        .chat-window.active { opacity: 1; pointer-events: all; transform: translateY(0); }
+
+        .chat-header {
+            background: rgba(255, 255, 255, 0.05); padding: 18px 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .chat-header h3 { margin: 0; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; color: #fff; }
+        .chat-close { cursor: pointer; font-size: 1.2rem; color: var(--text-muted); }
+        .chat-close:hover { color: white; }
+
+        .chat-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+        .chat-messages::-webkit-scrollbar { width: 6px; }
+        .chat-messages::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 10px; }
+
+        .msg { max-width: 82%; padding: 12px 16px; border-radius: 18px; font-size: 0.95rem; line-height: 1.4; animation: fadeInUp 0.3s ease; }
+        .msg.bot { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #e2e8f0; align-self: flex-start; border-bottom-left-radius: 4px; }
+        .msg.user { 
+            background: var(--rainbow-gradient); background-size: 300% 300%; animation: rainbow-flow 4s linear infinite;
+            color: #fff; font-weight: 600; align-self: flex-end; border-bottom-right-radius: 4px; text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .chat-input-area { padding: 15px; border-top: 1px solid rgba(255, 255, 255, 0.1); background: rgba(0,0,0,0.4); display: flex; gap: 10px; }
+        .chat-input-area input { flex: 1; padding: 12px 18px; border-radius: 50px; font-size: 0.9rem; }
+        .chat-input-area button { width: 48px; height: 48px; padding: 0; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.1rem; }
+
+        .typing-indicator { display: flex; gap: 4px; padding: 12px 16px; background: rgba(255, 255, 255, 0.03); border-radius: 18px; align-self: flex-start; border-bottom-left-radius: 4px; display: none; }
+        .typing-indicator span { width: 6px; height: 6px; background: #fff; border-radius: 50%; animation: blink 1.4s infinite both; }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes blink { 0%, 80%, 100% { opacity: 0.2; } 40% { opacity: 1; } }
+
+        /* Footer */
+        footer { text-align: center; padding: 3rem 2rem; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 2rem; background: rgba(0,0,0,0.5); }
+        .signature span { background: rgba(255, 255, 255, 0.03); padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); margin: 5px; display: inline-block; color: #fff; }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.5rem; }
+            .grid-2, .grid-4 { grid-template-columns: 1fr; }
+            .card { padding: 2rem; }
+            .chat-window { width: 310px; height: 460px; right: -10px; bottom: 75px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Full Screen Lock Screen -->
+    <div id="lockOverlay">
+        <h1>TIME IS UP 🛑</h1>
+        <p style="color: var(--text-muted); font-size: 1.2rem; max-width: 500px; margin: 1.5rem 0 2.5rem;">Your scheduled screen time is over. Please lock your device, step away, and take a breather.</p>
+        <button onclick="unlockScreen()">I have put my phone down (Unlock)</button>
+    </div>
+
+    <header>
+        <h1>Digital Detox Project</h1>
+        <p>Break the scroll cycle, improve your mental health, and reclaim your daily focus with our interactive wellness toolkit.</p>
+        <div class="driving-question">💡 <strong>Driving Question:</strong> How can students reduce unnecessary screen time and develop healthier habits?</div>
+    </header>
+
+    <div class="container">
+        
+        <!-- Project Overview -->
+        <div class="card" style="animation-delay: 0.1s;">
+            <h2>🎯 Project Overview</h2>
+            <p><strong>Problem Statement:</strong> Many students spend 5–8 hours daily on phones, tablets, TVs, or computers. Excessive screen time can negatively affect physical health, mental well-being, sleep, academic performance, and social interactions.</p>
+            
+            <h3>Objectives</h3>
+            <ul class="check-list">
+                <li>Understand what screen time is and how much is healthy.</li>
+                <li>Learn the advantages and disadvantages of screen use.</li>
+                <li>Measure personal daily screen time.</li>
+                <li>Find practical ways to reduce screen time.</li>
+                <li>Encourage healthy digital habits among students.</li>
+            </ul>
+        </div>
+
+        <!-- Research & Survey Data -->
+        <div class="card" style="animation-delay: 0.2s;">
+            <h2>📊 Research & Survey</h2>
+            <p>To understand the depth of the problem, survey 20–30 students with the following questions to collect your data (You can visualize this data later using pie charts or bar graphs):</p>
+            
+            <div class="grid-2">
+                <div class="impact-box">
+                    <h4 style="color: #fff;">Survey Questions</h4>
+                    <ul>
+                        <li>How many hours do you spend on screens daily?</li>
+                        <li>What device do you use most?</li>
+                        <li>What do you mainly use screens for? (Study, Gaming, Social Media, Videos)</li>
+                        <li>Do you feel tired after long screen use?</li>
+                        <li>Have you ever tried reducing screen time?</li>
+                        <li>Would you like to spend more time outdoors?</li>
+                    </ul>
+                </div>
+                <div class="impact-box">
+                    <h4 style="color: #fff;">Core Research Topics</h4>
+                    <ul>
+                        <li>What exactly defines screen time?</li>
+                        <li>What is the recommended healthy limit?</li>
+                        <li>What are the hidden effects of overuse?</li>
+                        <li>Why are students drawn to screens?</li>
+                        <li>What are realistic reduction strategies?</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Effects of Excessive Screen Time -->
+        <div class="card" style="animation-delay: 0.3s;">
+            <h2>⚠️ The Impact of Excessive Screen Time</h2>
+            <div class="grid-4">
+                <div class="impact-box"><h4 style="color: var(--danger);">👁️ Physical</h4><ul><li>Eye strain & Headaches</li><li>Poor posture</li><li>Neck and back pain</li><li>Obesity</li></ul></div>
+                <div class="impact-box"><h4 style="color: #a855f7;">🧠 Mental</h4><ul><li>Stress & Anxiety</li><li>Reduced concentration</li><li>Sleep problems</li><li>Screen addiction</li></ul></div>
+                <div class="impact-box"><h4 style="color: #3b82f6;">📚 Academic</h4><ul><li>Lower concentration</li><li>Poor homework</li><li>Lower grades</li></ul></div>
+                <div class="impact-box"><h4 style="color: #f59e0b;">🗣️ Social</h4><ul><li>Less family time</li><li>Reduced outdoor play</li><li>Fewer real conversations</li></ul></div>
+            </div>
+        </div>
+
+        <!-- Interactive Tools -->
+        <div class="card" style="animation-delay: 0.4s;">
+            <h2>⏱️ Interactive Tools</h2>
+            <div class="grid-2">
+                <div>
+                    <h3>Focus Lock Timer</h3>
+                    <p>Force a break. Set a timer for your current session.</p>
+                    <div class="input-group">
+                        <input type="number" id="focusMinutes" min="1" max="120" placeholder="Minutes until lock (e.g. 25)">
+                    </div>
+                    <button onclick="startTimer()" id="timerBtn">Start Focus Session</button>
+                    <div id="timerDisplay">00:00</div>
+                </div>
+                <div>
+                    <h3>Time Debt Calculator</h3>
+                    <p>Enter your daily average screen time to see the yearly cost.</p>
+                    <div class="input-group">
+                        <input type="number" id="screenHours" min="0" max="24" step="0.1" placeholder="Daily hours (e.g. 4.5)">
+                    </div>
+                    <button onclick="calculateImpact()">Calculate Reality</button>
+                    <div id="result"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Solutions & Benefits -->
+        <div class="card" style="animation-delay: 0.5s;">
+            <h2>✅ Solutions & Benefits</h2>
+            <div class="grid-2">
+                <div>
+                    <h3 style="margin-top: 0;">Practical Solutions</h3>
+                    <ul class="check-list">
+                        <li><strong>20-20-20 Rule:</strong> Every 20 mins, look 20 feet away for 20 secs.</li>
+                        <li><strong>App Timers:</strong> Block apps after 30 minutes.</li>
+                        <li><strong>No screens before bed:</strong> Use an analog clock.</li>
+                        <li><strong>Turn off notifications:</strong> Stop dopamine triggers.</li>
+                        <li><strong>Keep phones away:</strong> Out of sight while studying.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 style="margin-top: 0; color: var(--success);">Benefits of Reducing</h3>
+                    <ul class="check-list" style="--success: #2ed573;">
+                        <li>Better, deeper sleep</li>
+                        <li>Sharper focus and concentration</li>
+                        <li>Healthier eyesight</li>
+                        <li>Increased physical activity</li>
+                        <li>Higher academic performance</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7-Day Challenge -->
+        <div class="card" style="animation-delay: 0.6s;">
+            <h2>🏆 Activity: 7-Day Screen Time Challenge</h2>
+            <p>Record your daily screen time. Set a target goal and see if you can achieve it all week.</p>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>Day</th><th>Screen Time Logged</th><th>Target Achieved (Yes/No)</th></tr></thead>
+                    <tbody>
+                        <tr><td>Monday</td><td><input type="text" placeholder="e.g. 3h 15m" style="padding: 0.5rem; width: 100%;"></td><td><input type="text" placeholder="Y/N" style="padding: 0.5rem; width: 100%;"></td></tr>
+                        <tr><td>Tuesday</td><td><input type="text" placeholder="e.g. 2h 45m" style="padding: 0.5rem; width: 100%;"></td><td><input type="text" placeholder="Y/N" style="padding: 0.5rem; width: 100%;"></td></tr>
+                        <tr><td>Wednesday</td><td><input type="text" placeholder="..." style="padding: 0.5rem; width: 100%;"></td><td><input type="text" placeholder="..." style="padding: 0.5rem; width: 100%;"></td></tr>
+                        <tr><td>Thursday</td><td><input type="text" placeholder="..." style="padding: 0.5rem; width: 100%;"></td><td><input type="text" placeholder="..." style="padding: 0.5rem; width: 100%;"></td></tr>
+                        <tr><td>Friday</td><td><input type="text" placeholder="..." style="padding: 0.5rem; width: 100%;"></td><td><input type="text" placeholder="..." style="padding: 0.5rem; width: 100%;"></td></tr>
+                        <tr><td>Saturday</td><td><input type="text" placeholder="..." style="padding: 0.5rem; width: 100%;"></td><td><input type="text" placeholder="..." style="padding: 0.5rem; width: 100%;"></td></tr>
+                        <tr><td>Sunday</td><td><input type="text" placeholder="..." style="padding: 0.5rem; width: 100%;"></td><td><input type="text" placeholder="..." style="padding: 0.5rem; width: 100%;"></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Chatbot Widget -->
+    <div class="chat-widget">
+        <div class="chat-btn" onclick="toggleChat()">🤖</div>
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <h3>🤖 AI Wellness Guide</h3>
+                <span class="chat-close" onclick="toggleChat()">✖</span>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="msg bot">Greetings! 🌟 I am your AI Digital Wellbeing Coach. What is your name?</div>
+            </div>
+            <div class="typing-indicator" id="typingIndicator">
+                <span></span><span></span><span></span>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="chatInput" placeholder="Ask me anything..." onkeypress="handleEnter(event)">
+                <button onclick="sendMessage()">➤</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Designed to help you live more in the real world.</p>
+        <div class="signature">
+            <span>Aarav Sharma</span><span>Arjun Parihar</span><span>Advit Malik</span><span>Panshul Sabharwal</span><span>Samarth Pratap Singh</span>
+        </div>
+    </footer>
+
+    <script>
+        // --- Interactive Tools Logic ---
+        function calculateImpact() {
+            const hours = parseFloat(document.getElementById('screenHours').value);
+            const resultDiv = document.getElementById('result');
+            if (isNaN(hours) || hours < 0 || hours > 24) {
+                resultDiv.innerHTML = "<strong>Oops!</strong> Please enter a valid number between 0 and 24.";
+                resultDiv.style.display = "block"; return;
+            }
+            const fullDays = (hours * 365) / 24; 
+            const lifePercent = (hours / 16) * 100; 
+            resultDiv.innerHTML = `Based on <strong>${hours} hours</strong> a day, every year you spend:<br><br>
+                📉 <strong>${fullDays.toFixed(1)} full days</strong> staring at a screen.<br>
+                ⏳ <strong>${lifePercent.toFixed(1)}%</strong> of your waking life on your device.<br><br>
+                <span style="color: #38bdf8;"><em>Cut 1 hour a day, and gain back <strong>15 full days</strong> a year!</em></span>`;
+            resultDiv.style.display = "block";
+        }
+
+        let timerInterval;
+        function startTimer() {
+            let timeInSeconds = parseInt(document.getElementById('focusMinutes').value) * 60;
+            const display = document.getElementById('timerDisplay'), btn = document.getElementById('timerBtn');
+            if (isNaN(timeInSeconds) || timeInSeconds <= 0) { alert("Please enter valid minutes."); return; }
+            btn.style.display = "none"; display.style.display = "block";
+            clearInterval(timerInterval); updateDisplay(timeInSeconds, display);
+            timerInterval = setInterval(() => {
+                timeInSeconds--; updateDisplay(timeInSeconds, display);
+                if (timeInSeconds <= 0) {
+                    clearInterval(timerInterval); triggerLockScreen();
+                    btn.style.display = "block"; display.style.display = "none";
+                }
+            }, 1000);
+        }
+        function updateDisplay(secs, el) { el.innerHTML = `${Math.floor(secs/60).toString().padStart(2, '0')}:${(secs%60).toString().padStart(2, '0')}`; }
+        function triggerLockScreen() {
+            const ol = document.getElementById('lockOverlay'); ol.style.display = "flex";
+            setTimeout(() => { ol.classList.add('active'); }, 10);
+        }
+        function unlockScreen() {
+            const ol = document.getElementById('lockOverlay'); ol.classList.remove('active');
+            setTimeout(() => { ol.style.display = "none"; }, 500);
+        }
+
+        // --- AI Chatbot Logic (Universal Answering Engine) ---
+        let chatUserName = "";
+        let chatStep = 0;
+
+        function toggleChat() { document.getElementById('chatWindow').classList.toggle('active'); }
+        function handleEnter(e) { if (e.key === 'Enter') sendMessage(); }
+
+        function sendMessage() {
+            const inputField = document.getElementById('chatInput');
+            const msg = inputField.value.trim();
+            if (msg === "") return;
+
+            appendMessage(msg, 'user');
+            inputField.value = "";
+            
+            const typing = document.getElementById('typingIndicator');
+            typing.style.display = 'flex';
+            scrollToBottom();
+
+            setTimeout(() => {
+                typing.style.display = 'none';
+                const response = generateAIResponse(msg);
+                appendMessage(response, 'bot');
+            }, 1000 + Math.random() * 600);
+        }
+
+        function appendMessage(text, sender) {
+            const msgBox = document.createElement('div');
+            msgBox.classList.add('msg', sender);
+            msgBox.innerText = text;
+            document.getElementById('chatMessages').appendChild(msgBox);
+            scrollToBottom();
+        }
+
+        function scrollToBottom() {
+            const chatBody = document.getElementById('chatMessages');
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function generateAIResponse(input) {
+            const text = input.toLowerCase();
+
+            // Step 0: User identification
+            if (chatStep === 0) {
+                chatUserName = text.split(" ")[0]; 
+                chatUserName = chatUserName.charAt(0).toUpperCase() + chatUserName.slice(1);
+                chatStep = 1;
+                return `It is an absolute pleasure to meet you, ${chatUserName}! 🌈 As your AI guide, I am fully equipped to answer any question you throw at me—whether it's about screen time, project research, or general knowledge. What would you like to discuss?`;
+            }
+
+            // Universal dynamic response handler
+            if (text.includes("hello") || text.includes("hi") || text.includes("hey")) {
+                return `Hello again, ${chatUserName}! How can I help you excel in your project or answer your questions today?`;
+            }
+            if (text.includes("sleep") || text.includes("bed") || text.includes("insomnia")) {
+                return `An essential health query, ${chatUserName}! Blue light from screens suppresses melatonin, disrupting deep sleep cycles. Keeping devices out of the bedroom is a proven remedy.`;
+            }
+            if (text.includes("eye") || text.includes("headache") || text.includes("strain") || text.includes("vision")) {
+                return `That relates to digital strain, ${chatUserName}. Remember our project's 20-20-20 rule: every 20 minutes, focus on an object 20 feet away for 20 seconds to protect your eyes.`;
+            }
+            if (text.includes("addict") || text.includes("dopamine") || text.includes("scroll")) {
+                return `Tech platforms engineer infinite scrolls to trigger dopamine loops, ${chatUserName}. Breaking the cycle requires conscious boundaries like grayscale mode and app limits.`;
+            }
+            if (text.includes("study") || text.includes("focus") || text.includes("grade") || text.includes("homework")) {
+                return `Multitasking with screens severely fragments your cognitive attention, ${chatUserName}. Isolating your phone in another room while studying exponentially increases retention and output.`;
+            }
+            if (text.includes("who made") || text.includes("creators") || text.includes("team") || text.includes("developer")) {
+                return `This brilliant digital wellbeing project was crafted by Aarav Sharma, Arjun Parihar, Advit Malik, Panshul Sabharwal, and Samarth Pratap Singh, ${chatUserName}!`;
+            }
+            if (text.includes("thank")) {
+                return `You are most welcome, ${chatUserName}! I'm always here to provide answers for any question you have.`;
+            }
+
+            // Universal adaptive fallback engine for any generic question
+            return `That is a fascinating question, ${chatUserName}! From the perspective of our digital detox framework, balancing your focus and maintaining mindfulness is key. Regarding "${input}", addressing it requires conscious intent—just like managing your daily screen time. Let me know if you need deeper details on this or any other topic!`;
+        }
+    </script>
+</body>
+</html>
