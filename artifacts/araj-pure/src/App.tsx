@@ -7,6 +7,7 @@ import Home from '@/pages/Home';
 import Navbar from '@/components/Navbar';
 import Cart from '@/components/Cart';
 import WhatsAppButton from '@/components/WhatsAppButton';
+import GheeChat from '@/components/GheeChat';
 
 const queryClient = new QueryClient();
 
@@ -40,6 +41,7 @@ function App() {
             <Router />
             <Cart />
             <WhatsAppButton />
+            <GheeChat />
           </WouterRouter>
           <Toaster />
         </TooltipProvider>
