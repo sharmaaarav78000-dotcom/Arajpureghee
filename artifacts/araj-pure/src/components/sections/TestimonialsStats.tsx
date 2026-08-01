@@ -46,6 +46,12 @@ const REVIEWS = [
     location: 'Mumbai',
     initials: 'AS',
   },
+  {
+    text: 'Extraordinary quality and genuine taste — this ghee takes me straight back to my grandmother\'s kitchen. Highly recommended!',
+    author: 'Aarav Sharma',
+    location: 'Agra',
+    initials: 'AS',
+  },
 ];
 
 const STATS = [
@@ -80,7 +86,7 @@ export default function TestimonialsStats() {
             </h2>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {REVIEWS.map((r, i) => (
               <motion.div
                 key={i} {...fade(i * 0.12)}
