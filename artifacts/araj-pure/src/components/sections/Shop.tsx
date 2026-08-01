@@ -67,6 +67,14 @@ export default function Shop() {
                 src={IMAGES[activeImg]} alt="Araj Pure A2 Cow Ghee"
                 className="w-full h-full object-cover"
               />
+              {/* Raksha Bandhan offer badge on image */}
+              <div className="absolute top-4 right-4 flex flex-col items-center text-center px-3 py-2.5 rounded-sm"
+                style={{ background: 'linear-gradient(135deg, #b5171e, #e8401a)', boxShadow: '0 4px 20px rgba(180,23,30,0.45)', minWidth: 72 }}>
+                <span style={{ color: '#fff', fontFamily: "'Inter', sans-serif", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', opacity: 0.9 }}>Raksha</span>
+                <span style={{ color: '#ffe066', fontFamily: "'Playfair Display', serif", fontSize: '1.45rem', fontWeight: 700, lineHeight: 1.1 }}>₹250</span>
+                <span style={{ color: '#fff', fontFamily: "'Inter', sans-serif", fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', opacity: 0.9 }}>Bandhan</span>
+                <span style={{ color: '#ffe066', fontFamily: "'Inter', sans-serif", fontSize: '0.58rem', fontWeight: 600, marginTop: 2 }}>OFF</span>
+              </div>
               {/* Premium label */}
               <div className="absolute top-4 left-4 font-display text-[10px] tracking-[0.18em] px-3 py-1.5" style={{ background: 'var(--espresso)', color: 'var(--gold)' }}>
                 PREMIUM
@@ -119,16 +127,16 @@ export default function Shop() {
 
             {/* Price */}
             <div className="flex items-end gap-3 mb-8 pb-8" style={{ borderBottom: '1px solid rgba(200,164,94,0.2)' }}>
-              <span className="font-display font-bold text-4xl gold-text">₹799</span>
+              <span className="font-display font-bold text-4xl gold-text">₹2,700</span>
               <span className="font-sans text-sm mb-1.5" style={{ color: 'rgba(44,26,10,0.4)' }}>/ 1 kg</span>
-              <div className="mb-1.5 ml-2 flex gap-2">
+              <div className="mb-1.5 ml-2 flex gap-2 flex-wrap">
                 <span className="px-2.5 py-1 font-sans text-[10px] font-semibold tracking-wider uppercase"
                   style={{ background: 'var(--espresso)', color: 'var(--gold)', border: '1px solid rgba(200,164,94,0.3)' }}>
                   Bestseller
                 </span>
                 <span className="px-2.5 py-1 font-sans text-[10px] font-semibold tracking-wider uppercase"
-                  style={{ background: 'rgba(120,105,60,0.12)', color: 'rgba(44,26,10,0.6)', border: '1px solid rgba(200,164,94,0.2)' }}>
-                  Limited Batch
+                  style={{ background: 'rgba(255,100,100,0.1)', color: '#b34a00', border: '1px solid rgba(255,140,0,0.3)' }}>
+                  🎁 250g Jar Free
                 </span>
               </div>
             </div>
