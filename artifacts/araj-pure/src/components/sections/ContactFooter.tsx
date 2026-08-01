@@ -228,6 +228,9 @@ export default function ContactFooter() {
             <p className="font-sans text-[10px] tracking-wider" style={{ color: 'rgba(240,226,204,0.3)' }}>
               © 2026 Araj Pure. Crafted by Araj Dry Fruits & Spices. All rights reserved.
             </p>
+            <p className="font-sans text-xs mt-1" style={{ color: 'rgba(240,226,204,0.35)' }}>
+              Made by:- Aarav Sharma
+            </p>
             <div className="flex items-center gap-4 font-sans text-[10px] tracking-wider" style={{ color: 'rgba(240,226,204,0.3)' }}>
               <span>UPI Accepted</span>
               <span style={{ color: 'rgba(200,164,94,0.25)' }}>·</span>
