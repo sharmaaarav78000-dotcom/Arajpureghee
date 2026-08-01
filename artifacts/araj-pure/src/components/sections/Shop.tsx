@@ -118,10 +118,18 @@ export default function Shop() {
             </ul>
 
             {/* Price */}
-            <div className="flex items-end gap-4 mb-8 pb-8" style={{ borderBottom: '1px solid rgba(200,164,94,0.2)' }}>
-              <span className="font-display font-bold text-4xl gold-text">₹2,700</span>
-              <div className="mb-1 px-3 py-1 font-sans text-xs font-semibold tracking-wider" style={{ background: 'rgba(200,164,94,0.12)', color: 'var(--gold-dark)', border: '1px solid rgba(200,164,94,0.3)' }}>
-                ₹300 OFF · Code SAVE300
+            <div className="flex items-end gap-3 mb-8 pb-8" style={{ borderBottom: '1px solid rgba(200,164,94,0.2)' }}>
+              <span className="font-display font-bold text-4xl gold-text">₹799</span>
+              <span className="font-sans text-sm mb-1.5" style={{ color: 'rgba(44,26,10,0.4)' }}>/ 1 kg</span>
+              <div className="mb-1.5 ml-2 flex gap-2">
+                <span className="px-2.5 py-1 font-sans text-[10px] font-semibold tracking-wider uppercase"
+                  style={{ background: 'var(--espresso)', color: 'var(--gold)', border: '1px solid rgba(200,164,94,0.3)' }}>
+                  Bestseller
+                </span>
+                <span className="px-2.5 py-1 font-sans text-[10px] font-semibold tracking-wider uppercase"
+                  style={{ background: 'rgba(120,105,60,0.12)', color: 'rgba(44,26,10,0.6)', border: '1px solid rgba(200,164,94,0.2)' }}>
+                  Limited Batch
+                </span>
               </div>
             </div>
 
