@@ -22,14 +22,12 @@ export default function Cart() {
 
   const product = { name: "Araj Pure A2 Cow Ghee", price: 2700 };
   const subtotal = product.price * quantity;
-  const discount = discountApplied ? 300 : 0;
+  const discount = 250; // Raksha Bandhan offer — always applied
   const tax = Math.round((subtotal - discount) * 0.05);
   const final = subtotal - discount + tax;
 
   const handleApplyCoupon = () => {
-    if (couponInput.toUpperCase() === 'SAVE300') {
-      setDiscountApplied(true);
-    }
+    // Raksha Bandhan discount is auto-applied; coupon field kept for future use
   };
 
   const handleCheckout = () => {
@@ -212,28 +210,16 @@ export default function Cart() {
                         <span>₹{subtotal.toLocaleString()}</span>
                       </div>
                       
-                      {!discountApplied ? (
-                        <div className="mt-4 mb-2">
-                          <div className="flex gap-2">
-                            <input 
-                              type="text" 
-                              placeholder="Coupon code" 
-                              value={couponInput}
-                              onChange={e => setCouponInput(e.target.value)}
-                              className="w-full px-3 py-1.5 text-sm border border-border rounded bg-background" 
-                            />
-                            <button onClick={handleApplyCoupon} className="px-3 bg-foreground text-background rounded text-sm font-medium hover:bg-foreground/80 transition-colors whitespace-nowrap">
-                              Apply
-                            </button>
-                          </div>
-                          <p className="text-[10px] text-muted-foreground mt-1">Hint: Try SAVE300</p>
-                        </div>
-                      ) : (
-                        <div className="flex justify-between text-sm mb-2 text-green-600 font-medium items-center">
-                          <span className="flex items-center gap-1"><Tag size={12} /> SAVE300</span>
-                          <span>-₹300</span>
-                        </div>
-                      )}
+                      {/* Raksha Bandhan auto-discount */}
+                      <div className="flex justify-between text-sm mb-2 font-medium items-center" style={{ color: '#b34a00' }}>
+                        <span className="flex items-center gap-1"><Tag size={12} /> 🎉 Raksha Bandhan Offer</span>
+                        <span>-₹250</span>
+                      </div>
+                      {/* 250g jar free note */}
+                      <div className="flex justify-between text-sm mb-2 font-medium items-center" style={{ color: '#16a34a' }}>
+                        <span className="flex items-center gap-1"><Check size={12} /> 250g Jar Free</span>
+                        <span>Included</span>
+                      </div>
 
                       <div className="flex justify-between text-sm mb-4 text-muted-foreground">
                         <span>Tax (5%)</span>
