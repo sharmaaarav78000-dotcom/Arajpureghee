@@ -31,20 +31,20 @@ const REVIEWS = [
   {
     text: 'Best A2 Ghee I\'ve ever tasted. The aroma fills the entire kitchen instantly — absolutely mesmerising.',
     author: 'Rahul Sharma',
-    location: 'Delhi',
+    location: 'Agra',
     initials: 'RS',
   },
   {
     text: 'Pure, natural, and exactly as described. I\'ve been ordering every single month for a year now.',
-    author: 'Priya Menon',
-    location: 'Mumbai',
-    initials: 'PM',
+    author: 'Payal Sharma',
+    location: 'Agra',
+    initials: 'PS',
   },
   {
     text: 'You can taste the difference from the very first spoon. This is the real deal — nothing compares.',
-    author: 'Ankit Verma',
-    location: 'Jaipur',
-    initials: 'AV',
+    author: 'Avni Sharma',
+    location: 'Mumbai',
+    initials: 'AS',
   },
 ];
 
