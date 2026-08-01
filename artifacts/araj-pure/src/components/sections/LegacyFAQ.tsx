@@ -87,8 +87,11 @@ export default function LegacyFAQ() {
               Our Legacy Since 1985
             </h2>
 
-            <p className="font-serif text-xl md:text-2xl leading-[1.75] italic mb-16" style={{ color: 'rgba(44,26,10,0.72)' }}>
-              "Founded under the visionary leadership of M.D. Ankur Sharma, Araj Dry Fruits & Spices has been a beacon of trust and purity since 1985. For nearly four decades, we have remained steadfast in our commitment to crafting Premium Quality pantry staples, driven by a deep respect for Ayurvedic traditions — to safeguard authentic, time-honored methods and deliver 100% Natural, unadulterated goodness that nourishes both body and soul."
+            <p className="font-serif text-xl md:text-2xl leading-[1.8] italic mb-10" style={{ color: 'rgba(44,26,10,0.72)', fontFamily: "'Playfair Display', 'Cormorant Garamond', serif" }}>
+              "Since 1985, our family has believed that purity isn't manufactured — it is preserved. Every batch of Araj Pure reflects decades of experience, careful sourcing, and an unwavering respect for traditional methods."
+            </p>
+            <p className="font-sans text-sm leading-[1.9] mb-16 max-w-2xl mx-auto" style={{ color: 'rgba(44,26,10,0.52)' }}>
+              Founded by M.D. Ankur Sharma, Araj Pure began with one conviction: the best ghee cannot be rushed. We have never changed our process, never compromised our cows, and never added a single preservative. That commitment, unchanged across generations, is what you taste in every spoonful.
             </p>
 
             {/* Gold ornamental divider */}
