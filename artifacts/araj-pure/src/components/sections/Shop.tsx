@@ -127,16 +127,12 @@ export default function Shop() {
 
             {/* Price */}
             <div className="flex items-end gap-3 mb-8 pb-8" style={{ borderBottom: '1px solid rgba(200,164,94,0.2)' }}>
-              <span className="font-display font-bold text-4xl gold-text">₹2,700</span>
+              <span className="font-display font-bold text-4xl gold-text">₹2,299</span>
               <span className="font-sans text-sm mb-1.5" style={{ color: 'rgba(44,26,10,0.4)' }}>/ 1 kg</span>
               <div className="mb-1.5 ml-2 flex gap-2 flex-wrap">
                 <span className="px-2.5 py-1 font-sans text-[10px] font-semibold tracking-wider uppercase"
                   style={{ background: 'var(--espresso)', color: 'var(--gold)', border: '1px solid rgba(200,164,94,0.3)' }}>
                   Bestseller
-                </span>
-                <span className="px-2.5 py-1 font-sans text-[10px] font-semibold tracking-wider uppercase"
-                  style={{ background: 'rgba(255,100,100,0.1)', color: '#b34a00', border: '1px solid rgba(255,140,0,0.3)' }}>
-                  🎁 250g Jar Free
                 </span>
               </div>
             </div>
