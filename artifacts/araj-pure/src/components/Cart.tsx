@@ -20,7 +20,7 @@ export default function Cart() {
   const [txnId, setTxnId] = useState('');
   const [couponInput, setCouponInput] = useState('');
 
-  const product = { name: "Araj Pure A2 Cow Ghee", price: 2700 };
+  const product = { name: "Araj Pure A2 Cow Ghee", price: 2299 };
   const subtotal = product.price * quantity;
   const discount = 250; // Raksha Bandhan offer — always applied
   const tax = Math.round((subtotal - discount) * 0.05);
@@ -215,12 +215,6 @@ export default function Cart() {
                         <span className="flex items-center gap-1"><Tag size={12} /> 🎉 Raksha Bandhan Offer</span>
                         <span>-₹250</span>
                       </div>
-                      {/* 250g jar free note */}
-                      <div className="flex justify-between text-sm mb-2 font-medium items-center" style={{ color: '#16a34a' }}>
-                        <span className="flex items-center gap-1"><Check size={12} /> 250g Jar Free</span>
-                        <span>Included</span>
-                      </div>
-
                       <div className="flex justify-between text-sm mb-4 text-muted-foreground">
                         <span>Tax (5%)</span>
                         <span>+₹{tax.toLocaleString()}</span>
