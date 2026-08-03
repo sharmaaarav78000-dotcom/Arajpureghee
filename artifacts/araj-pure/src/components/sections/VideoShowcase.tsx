@@ -54,7 +54,7 @@ export default function VideoShowcase() {
           <div className="absolute bottom-0 inset-x-0 h-7 pointer-events-none" style={{ background: 'rgba(0,0,0,0.55)' }} />
           {/* Corner marks */}
           {corners.map((c, i) => (
-            <div key={i} className={`absolute ${c.pos} w-7 h-7 z-10 pointer-events-none`} style={c.s ?? c.style} />
+            <div key={i} className={`absolute ${c.pos} w-7 h-7 z-10 pointer-events-none`} style={c.style} />
           ))}
         </motion.div>
 
