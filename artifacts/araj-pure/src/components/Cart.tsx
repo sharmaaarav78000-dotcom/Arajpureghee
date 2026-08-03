@@ -10,7 +10,6 @@ export default function Cart() {
     quantity, setQuantity, 
     isCartOpen, setIsCartOpen, 
     isCheckoutOpen, setIsCheckoutOpen,
-    setDiscountApplied
   } = useCart();
 
   const [name, setName] = useState('');
@@ -44,7 +43,6 @@ export default function Cart() {
     
     setIsCheckoutOpen(false);
     setQuantity(0);
-    setDiscountApplied(false);
     setName('');
     setPhone('');
     setAddress('');
