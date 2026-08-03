@@ -10,7 +10,7 @@ export default function Cart() {
     quantity, setQuantity, 
     isCartOpen, setIsCartOpen, 
     isCheckoutOpen, setIsCheckoutOpen,
-    discountApplied, setDiscountApplied
+    setDiscountApplied
   } = useCart();
 
   const [name, setName] = useState('');
@@ -18,17 +18,12 @@ export default function Cart() {
   const [address, setAddress] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<'COD' | 'UPI'>('COD');
   const [txnId, setTxnId] = useState('');
-  const [couponInput, setCouponInput] = useState('');
 
   const product = { name: "Araj Pure A2 Cow Ghee", price: 2299 };
   const subtotal = product.price * quantity;
   const discount = 250; // Raksha Bandhan offer — always applied
   const tax = Math.round((subtotal - discount) * 0.05);
   const final = subtotal - discount + tax;
-
-  const handleApplyCoupon = () => {
-    // Raksha Bandhan discount is auto-applied; coupon field kept for future use
-  };
 
   const handleCheckout = () => {
     setIsCartOpen(false);
