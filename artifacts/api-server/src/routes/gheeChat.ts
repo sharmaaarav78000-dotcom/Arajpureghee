@@ -32,7 +32,8 @@ router.post("/ghee-chat", async (req, res) => {
   };
 
   if (!Array.isArray(messages) || messages.length === 0) {
-    return res.status(400).json({ error: "messages array is required" });
+    res.status(400).json({ error: "messages array is required" });
+    return;
   }
 
   res.setHeader("Content-Type", "text/event-stream");
