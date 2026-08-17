@@ -1,0 +1,6 @@
+{
+  "buildCommand": "pnpm run build",
+  "outputDirectory": "artifacts/mockup-sandbox/dist",
+  "framework": "vite",
+  "installCommand": "pnpm install --frozen-lockfile"
+}
