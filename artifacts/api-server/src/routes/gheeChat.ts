@@ -3,10 +3,6 @@ import OpenAI from "openai";
 
 const router = Router();
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
 const SYSTEM_PROMPT = `You are "Gau Sakhi", a warm and knowledgeable expert on Araj Pure A2 Cow Ghee — a premium traditional Indian ghee brand established in 1985. You answer questions about:
 
 - What A2 ghee is and how it differs from regular ghee
@@ -41,6 +37,18 @@ router.post("/ghee-chat", async (req, res) => {
   res.setHeader("Connection", "keep-alive");
 
   try {
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+      // Mock / fallback response if OpenAI API key is not configured
+      const userMsg = messages[messages.length - 1]?.content || "";
+      const fallbackResponse = "Namaste! 🙏 Araj Pure A2 Cow Ghee is made using the traditional Bilona method from free-grazing indigenous cows. For any questions, you can also connect directly with us via WhatsApp (+91-98765-43210)!";
+      res.write(`data: ${JSON.stringify({ content: fallbackResponse })}\n\n`);
+      res.write(`data: ${JSON.stringify({ done: true })}\n\n`);
+      res.end();
+      return;
+    }
+
+    const openai = new OpenAI({ apiKey });
     const stream = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       max_tokens: 512,

@@ -7,10 +7,10 @@ import img2 from '@assets/Gemini_Generated_Image_882eb1882eb1882e_1784571609389.
 import img3 from '@assets/Gemini_Generated_Image_nxf9ysnxf9ysnxf9_1784571617117.png';
 import img4 from '@assets/Gemini_Generated_Image_uxjmkduxjmkduxjm_1784571624266.png';
 
-import vid3 from '@assets/araj_uses_video_1784571523028.mp4';
-import vid4 from '@assets/araj_uses_video_2_1784571529986.mp4';
-import vid5 from '@assets/Second_Cinematic_Advertisem_1784571632461.mp4';
-import vid6 from '@assets/Second_Premium_Commercial_P_1784571639675.mp4';
+import vid1 from '@assets/ARAJ_Pure_A_Cow_Ghee_–_From_1784571516339.mp4';
+import vid2 from '@assets/araj_uses_video_2_1784571529986.mp4';
+import vid3 from '@assets/Second_Cinematic_Advertisem_1784571632461.mp4';
+import vid4 from '@assets/Second_Premium_Commercial_P_1784571639675.mp4';
 
 const gallery = [
   { src: img1, caption: 'Rustic Purity',       num: '01' },
@@ -26,7 +26,7 @@ const usesCards = [
   { icon: Droplets, title: 'Ayurvedic Skincare',       desc: 'A centuries-old beauty secret — pure ghee deeply moisturizes skin and lips, leaving them soft and nourished.' },
 ];
 
-const videos = [vid3, vid4, vid5, vid6];
+const videos = [vid1, vid2, vid3, vid4];
 
 const videoLabels = ['Cooking Showcase', 'Daily Ritual', 'Cinematic Feature', 'Premium Ad'];
 

@@ -1,0 +1,6 @@
+{
+  "name": "Araj Pure",
+  "description": "Authentic A2 Desi Cow Ghee handcrafted via traditional Bilona method, with artisanal shop, health guide, and interactive Gau Sakhi expert.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

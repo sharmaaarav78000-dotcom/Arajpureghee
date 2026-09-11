@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import video1 from '@assets/Araj_pure_ghee_video_1784571510752.mp4';
+import video1 from '@assets/Second_Cinematic_Advertisem_1784571632461.mp4';
 import video2 from '@assets/ARAJ_Pure_A_Cow_Ghee_–_From_1784571516339.mp4';
 
 const corners = [
