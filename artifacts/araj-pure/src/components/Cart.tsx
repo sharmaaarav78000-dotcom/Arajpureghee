@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '@/context/CartContext';
+import { useToast } from '@/hooks/use-toast';
 import { X, Plus, Minus, Check, Tag, ShoppingBag } from 'lucide-react';
 import productImg from '@assets/Gemini_Generated_Image_uxjmkduxjmkduxjm_1784571624266.png';
 import upiQr from '@assets/ChatGPT_Image_Jul_18,_2026,_03_00_35_PM_1784571576482.png';
@@ -12,6 +13,7 @@ export default function Cart() {
     isCheckoutOpen, setIsCheckoutOpen,
   } = useCart();
 
+  const { toast } = useToast();
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
@@ -31,8 +33,12 @@ export default function Cart() {
 
   const handlePlaceOrder = (e: React.FormEvent) => {
     e.preventDefault();
-    if (paymentMethod === 'UPI' && !txnId) {
-      alert("Please enter the UPI Transaction ID");
+    if (paymentMethod === 'UPI' && !txnId.trim()) {
+      toast({
+        title: "Transaction ID Required",
+        description: "Please enter your UPI Transaction ID to confirm payment.",
+        variant: "destructive",
+      });
       return;
     }
     
