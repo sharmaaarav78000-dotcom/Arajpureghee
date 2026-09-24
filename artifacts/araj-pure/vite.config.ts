@@ -1,7 +1,8 @@
 import path from 'path';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
-import { defineConfig } from 'vite';
+import { defineConfig, type Plugin } from 'vite';
+import { handleGeminiChat } from './server/geminiChatHandler';
 
 const rawPort = process.env.PORT ?? '3000';
 const port = Number(rawPort);
@@ -12,11 +13,36 @@ if (Number.isNaN(port) || port <= 0) {
 
 const basePath = process.env.BASE_PATH ?? '/';
 
+function geminiChatApiPlugin(): Plugin {
+  return {
+    name: 'gemini-chat-api',
+    configureServer(server) {
+      server.middlewares.use((req, res, next) => {
+        if (req.url === '/api/gemini/chat') {
+          handleGeminiChat(req, res);
+        } else {
+          next();
+        }
+      });
+    },
+    configurePreviewServer(server) {
+      server.middlewares.use((req, res, next) => {
+        if (req.url === '/api/gemini/chat') {
+          handleGeminiChat(req, res);
+        } else {
+          next();
+        }
+      });
+    },
+  };
+}
+
 export default defineConfig({
   base: basePath,
   plugins: [
     react(),
     tailwindcss(),
+    geminiChatApiPlugin(),
   ],
   resolve: {
     alias: {

@@ -4,17 +4,20 @@ import video1 from '@assets/Second_Cinematic_Advertisem_1784571632461.mp4';
 import video2 from '@assets/ARAJ_Pure_A_Cow_Ghee_–_From_1784571516339.mp4';
 
 const corners = [
-  { pos: 'top-3 left-3',    style: { borderTop: '2px solid rgba(200,164,94,0.7)', borderLeft: '2px solid rgba(200,164,94,0.7)' } },
-  { pos: 'top-3 right-3',   style: { borderTop: '2px solid rgba(200,164,94,0.7)', borderRight: '2px solid rgba(200,164,94,0.7)' } },
-  { pos: 'bottom-3 left-3', style: { borderBottom: '2px solid rgba(200,164,94,0.7)', borderLeft: '2px solid rgba(200,164,94,0.7)' } },
-  { pos: 'bottom-3 right-3',style: { borderBottom: '2px solid rgba(200,164,94,0.7)', borderRight: '2px solid rgba(200,164,94,0.7)' } },
+  { pos: 'top-3 left-3',    style: { borderTop: '2px solid rgba(214,179,106,0.75)', borderLeft: '2px solid rgba(214,179,106,0.75)' } },
+  { pos: 'top-3 right-3',   style: { borderTop: '2px solid rgba(214,179,106,0.75)', borderRight: '2px solid rgba(214,179,106,0.75)' } },
+  { pos: 'bottom-3 left-3', style: { borderBottom: '2px solid rgba(214,179,106,0.75)', borderLeft: '2px solid rgba(214,179,106,0.75)' } },
+  { pos: 'bottom-3 right-3',style: { borderBottom: '2px solid rgba(214,179,106,0.75)', borderRight: '2px solid rgba(214,179,106,0.75)' } },
 ];
 
 export default function VideoShowcase() {
   return (
-    <section id="story" className="relative py-28 overflow-hidden" style={{ background: 'var(--espresso)' }}>
-      {/* Ambient gold haze */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] rounded-full blur-[120px] pointer-events-none" style={{ background: 'rgba(200,164,94,0.06)' }} />
+    <section id="story" className="relative py-28 overflow-hidden bg-[#080909]">
+      {/* Ambient champagne haze: Obsidian (#080909) -> Deep Charcoal (#121414) */}
+      <div
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[350px] rounded-full blur-[150px] pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(214,179,106,0.08) 0%, transparent 70%)' }}
+      />
 
       <div className="max-w-5xl mx-auto px-6 relative z-10">
         
@@ -26,32 +29,36 @@ export default function VideoShowcase() {
         >
           <div className="flex items-center justify-center gap-4 mb-5">
             <div className="gold-line w-14" />
-            <span className="font-sans text-[10px] tracking-[0.3em] uppercase" style={{ color: 'var(--gold)' }}>The Craft</span>
+            <span className="font-sans text-[10px] tracking-[0.3em] uppercase text-[#D6B36A] font-semibold">The Craft</span>
             <div className="gold-line w-14" />
           </div>
-          <h2 className="font-display font-bold mb-4" style={{ fontSize: 'clamp(1.9rem,4vw,3.2rem)', color: 'var(--ivory)', letterSpacing: '0.04em' }}>
+          <h2
+            className="font-display font-bold mb-4 text-[#F5F1E8]"
+            style={{ fontSize: 'clamp(1.9rem,4vw,3.2rem)', letterSpacing: '0.04em' }}
+          >
             The Bilona Journey
           </h2>
-          <p className="font-serif italic text-lg" style={{ color: 'rgba(240,226,204,0.55)' }}>
+          <p className="font-serif italic text-lg text-[#F5F1E8]/65">
             Watch how we meticulously hand-churn every batch
           </p>
         </motion.div>
 
-        {/* Main cinematic video */}
+        {/* Main cinematic video in luxury glass chassis */}
         <motion.div
           initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} transition={{ duration: 0.9, delay: 0.15 }}
-          className="relative mb-6 overflow-hidden"
+          className="relative mb-8 overflow-hidden rounded-[28px]"
           style={{
             paddingBottom: '56.25%',
-            border: '1px solid rgba(200,164,94,0.22)',
-            boxShadow: '0 0 80px rgba(200,164,94,0.1), 0 40px 80px rgba(0,0,0,0.55)',
+            border: '1px solid rgba(214,179,106,0.3)',
+            boxShadow: '0 0 90px rgba(214,179,106,0.1), 0 35px 75px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.08)',
           }}
         >
           <video src={video1} autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover" />
-          {/* Cinematic top/bottom bars */}
-          <div className="absolute top-0 inset-x-0 h-7 pointer-events-none" style={{ background: 'rgba(0,0,0,0.55)' }} />
-          <div className="absolute bottom-0 inset-x-0 h-7 pointer-events-none" style={{ background: 'rgba(0,0,0,0.55)' }} />
+          {/* Cinematic top/bottom matte bars */}
+          <div className="absolute top-0 inset-x-0 h-8 pointer-events-none bg-[#080909]/65 backdrop-blur-sm" />
+          <div className="absolute bottom-0 inset-x-0 h-8 pointer-events-none bg-[#080909]/65 backdrop-blur-sm" />
+
           {/* Corner marks */}
           {corners.map((c, i) => (
             <div key={i} className={`absolute ${c.pos} w-7 h-7 z-10 pointer-events-none`} style={c.style} />
@@ -62,8 +69,12 @@ export default function VideoShowcase() {
         <motion.div
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.3 }}
-          className="relative overflow-hidden"
-          style={{ paddingBottom: '56.25%', border: '1px solid rgba(200,164,94,0.12)' }}
+          className="relative overflow-hidden rounded-[24px]"
+          style={{
+            paddingBottom: '56.25%',
+            border: '1px solid rgba(214,179,106,0.22)',
+            boxShadow: '0 20px 50px rgba(0,0,0,0.65)',
+          }}
         >
           <video src={video2} controls playsInline className="absolute inset-0 w-full h-full object-cover" />
         </motion.div>
@@ -71,7 +82,7 @@ export default function VideoShowcase() {
         {/* Ornamental separator */}
         <div className="flex items-center justify-center gap-4 mt-16">
           <div className="gold-line flex-1" />
-          <span className="font-display text-xs tracking-widest" style={{ color: 'rgba(200,164,94,0.4)' }}>✦ ✦ ✦</span>
+          <span className="font-display text-xs tracking-widest text-[#D6B36A]/60">✦ ✦ ✦</span>
           <div className="gold-line flex-1" />
         </div>
       </div>

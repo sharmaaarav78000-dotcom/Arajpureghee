@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
 import { Plus, Minus } from 'lucide-react';
 
 const FAQS = [
@@ -36,27 +35,49 @@ function FAQItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div style={{ borderBottom: '1px solid rgba(200,164,94,0.15)' }}>
+    <div
+      className="mb-4 rounded-2xl overflow-hidden transition-all duration-300"
+      style={{
+        border: open ? '1px solid rgba(214, 179, 106, 0.48)' : '1px solid rgba(214, 179, 106, 0.2)',
+        background: open ? 'rgba(28, 31, 31, 0.75)' : 'rgba(18, 20, 20, 0.55)',
+        backdropFilter: 'blur(16px)',
+      }}
+    >
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between py-5 text-left gap-4 transition-colors duration-200"
-        onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = 'var(--gold)'; }}
-        onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = 'var(--ivory)'; }}
-        style={{ color: 'var(--ivory)' }}
+        className="w-full flex items-center justify-between p-6 text-left gap-4 transition-colors duration-200 cursor-pointer"
       >
-        <span className="font-display font-semibold text-base tracking-[0.04em]">{q}</span>
-        <span className="shrink-0 w-7 h-7 flex items-center justify-center" style={{ border: '1px solid rgba(200,164,94,0.35)', color: 'var(--gold)' }}>
+        <span
+          className="font-display font-semibold text-base tracking-[0.04em] transition-colors"
+          style={{ color: open ? '#E8D39A' : '#F5F1E8' }}
+        >
+          {q}
+        </span>
+        <span
+          className="shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-transform duration-300"
+          style={{
+            border: '1px solid rgba(214, 179, 106, 0.4)',
+            color: '#D6B36A',
+            background: open ? 'rgba(214, 179, 106, 0.18)' : 'transparent',
+          }}
+        >
           {open ? <Minus size={13} /> : <Plus size={13} />}
         </span>
       </button>
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.35, ease: 'easeInOut' }}
             className="overflow-hidden"
           >
-            <p className="pb-5 font-sans text-sm leading-[1.85]" style={{ color: 'rgba(240,226,204,0.58)' }}>{a}</p>
+            <p
+              className="px-6 pb-6 font-sans text-sm leading-[1.85] text-[#F5F1E8]/70"
+            >
+              {a}
+            </p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -67,10 +88,13 @@ function FAQItem({ q, a }: { q: string; a: string }) {
 export default function LegacyFAQ() {
   return (
     <>
-      {/* ── LEGACY ── */}
-      <section id="roots" className="py-32 relative overflow-hidden" style={{ background: 'var(--ivory)' }}>
-        {/* Subtle gold radial bg */}
-        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 50% 60% at 50% 50%, rgba(200,164,94,0.06), transparent 70%)' }} />
+      {/* ── LEGACY: Obsidian Black (#080909) ── */}
+      <section id="roots" className="py-32 relative overflow-hidden bg-[#080909]">
+        {/* Champagne radial glow */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: 'radial-gradient(ellipse 60% 60% at 50% 50%, rgba(214,179,106,0.07), transparent 70%)' }}
+        />
 
         <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
           <motion.div
@@ -79,25 +103,31 @@ export default function LegacyFAQ() {
           >
             <div className="flex items-center justify-center gap-4 mb-6">
               <div className="gold-line w-16" />
-              <span className="font-sans text-[10px] tracking-[0.28em] uppercase" style={{ color: 'var(--gold-dark)' }}>Our Roots</span>
+              <span className="font-sans text-[10px] tracking-[0.3em] uppercase text-[#D6B36A] font-semibold">Our Roots</span>
               <div className="gold-line w-16" />
             </div>
 
-            <h2 className="font-display font-bold mb-10" style={{ fontSize: 'clamp(1.8rem,3.5vw,3rem)', color: 'var(--espresso)', letterSpacing: '0.04em' }}>
+            <h2
+              className="font-display font-bold mb-10 text-[#F5F1E8]"
+              style={{ fontSize: 'clamp(1.8rem,3.5vw,3rem)', letterSpacing: '0.04em' }}
+            >
               Our Legacy Since 1985
             </h2>
 
-            <p className="font-serif text-xl md:text-2xl leading-[1.8] italic mb-10" style={{ color: 'rgba(44,26,10,0.72)', fontFamily: "'Playfair Display', 'Cormorant Garamond', serif" }}>
+            <p
+              className="font-serif text-xl md:text-2xl leading-[1.8] italic mb-10 text-[#F5F1E8]/90"
+              style={{ fontFamily: "'Playfair Display', 'Cormorant Garamond', serif" }}
+            >
               "Since 1985, our family has believed that purity isn't manufactured — it is preserved. Every batch of Araj Pure reflects decades of experience, careful sourcing, and an unwavering respect for traditional methods."
             </p>
-            <p className="font-sans text-sm leading-[1.9] mb-16 max-w-2xl mx-auto" style={{ color: 'rgba(44,26,10,0.52)' }}>
+            <p className="font-sans text-sm leading-[1.9] mb-16 max-w-2xl mx-auto text-[#F5F1E8]/70">
               Founded by M.D. Ankur Sharma, Araj Pure began with one conviction: the best ghee cannot be rushed. We have never changed our process, never compromised our cows, and never added a single preservative. That commitment, unchanged across generations, is what you taste in every spoonful.
             </p>
 
-            {/* Gold ornamental divider */}
+            {/* Champagne ornamental divider */}
             <div className="flex items-center gap-4 mb-14">
               <div className="gold-line flex-1" />
-              <span className="font-display text-xs tracking-widest" style={{ color: 'rgba(200,164,94,0.5)' }}>✦ ✦ ✦</span>
+              <span className="font-display text-xs tracking-widest text-[#D6B36A]/70">✦ ✦ ✦</span>
               <div className="gold-line flex-1" />
             </div>
 
@@ -108,12 +138,17 @@ export default function LegacyFAQ() {
                   key={i}
                   initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }} transition={{ duration: 0.6, delay: i * 0.12 }}
-                  className="flex flex-col items-center gap-2 py-8 px-4"
-                  style={{ border: '1px solid rgba(200,164,94,0.18)', background: 'rgba(200,164,94,0.03)' }}
+                  className="flex flex-col items-center gap-2 py-8 px-5 rounded-[24px] transition-all duration-300 hover:-translate-y-1.5"
+                  style={{
+                    border: '1px solid rgba(214,179,106,0.25)',
+                    background: 'rgba(18,20,20,0.7)',
+                    backdropFilter: 'blur(16px)',
+                    boxShadow: '0 18px 45px rgba(0,0,0,0.55)',
+                  }}
                 >
-                  <span className="text-3xl mb-1" style={{ color: 'var(--gold)' }}>{p.glyph}</span>
-                  <h4 className="font-display text-sm font-semibold tracking-[0.08em]" style={{ color: 'var(--espresso)' }}>{p.label}</h4>
-                  <p className="font-sans text-xs" style={{ color: 'rgba(44,26,10,0.45)' }}>{p.sub}</p>
+                  <span className="text-3xl mb-1 text-[#D6B36A]">{p.glyph}</span>
+                  <h4 className="font-display text-sm font-semibold tracking-[0.08em] text-[#F5F1E8]">{p.label}</h4>
+                  <p className="font-sans text-xs text-[#F5F1E8]/55">{p.sub}</p>
                 </motion.div>
               ))}
             </div>
@@ -121,9 +156,9 @@ export default function LegacyFAQ() {
         </div>
       </section>
 
-      {/* ── FAQ ── */}
-      <section className="py-28 relative overflow-hidden" style={{ background: 'var(--espresso)' }}>
-        <div className="absolute top-0 inset-x-0 gold-line" />
+      {/* ── FAQ: Deep Charcoal (#121414) ── */}
+      <section className="py-28 relative overflow-hidden bg-[#121414]">
+        <div className="absolute top-0 inset-x-0 gold-line-full" />
 
         <div className="max-w-3xl mx-auto px-6 relative z-10">
           <motion.div
@@ -133,10 +168,13 @@ export default function LegacyFAQ() {
           >
             <div className="flex items-center justify-center gap-4 mb-5">
               <div className="gold-line w-12" />
-              <span className="font-sans text-[10px] tracking-[0.28em] uppercase" style={{ color: 'var(--gold)' }}>FAQ</span>
+              <span className="font-sans text-[10px] tracking-[0.3em] uppercase text-[#D6B36A] font-semibold">FAQ</span>
               <div className="gold-line w-12" />
             </div>
-            <h2 className="font-display font-bold" style={{ fontSize: 'clamp(1.8rem,3.5vw,3rem)', color: 'var(--ivory)', letterSpacing: '0.04em' }}>
+            <h2
+              className="font-display font-bold text-[#F5F1E8]"
+              style={{ fontSize: 'clamp(1.8rem,3.5vw,3rem)', letterSpacing: '0.04em' }}
+            >
               Your Questions, Answered
             </h2>
           </motion.div>

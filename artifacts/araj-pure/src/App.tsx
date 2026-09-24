@@ -3,11 +3,17 @@ import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Route, Switch, Router as WouterRouter } from 'wouter';
 import { CartProvider } from '@/context/CartContext';
+import { AuthProvider } from '@/context/AuthContext';
 import Home from '@/pages/Home';
 import Navbar from '@/components/Navbar';
 import Cart from '@/components/Cart';
+import AuthModal from '@/components/auth/AuthModal';
+import UserProfileModal from '@/components/auth/UserProfileModal';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import GheeChat from '@/components/GheeChat';
+import ScrollProgress from '@/components/effects/ScrollProgress';
+import CursorSpotlight from '@/components/effects/CursorSpotlight';
+import FuturisticLoader from '@/components/effects/FuturisticLoader';
 
 const queryClient = new QueryClient();
 
@@ -34,18 +40,25 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <CartProvider>
-        <TooltipProvider>
-          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
-            <Navbar />
-            <Router />
-            <Cart />
-            <WhatsAppButton />
-            <GheeChat />
-          </WouterRouter>
-          <Toaster />
-        </TooltipProvider>
-      </CartProvider>
+      <AuthProvider>
+        <CartProvider>
+          <TooltipProvider>
+            <FuturisticLoader />
+            <ScrollProgress />
+            <CursorSpotlight />
+            <AuthModal />
+            <UserProfileModal />
+            <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
+              <Navbar />
+              <Router />
+              <Cart />
+              <WhatsAppButton />
+              <GheeChat />
+            </WouterRouter>
+            <Toaster />
+          </TooltipProvider>
+        </CartProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

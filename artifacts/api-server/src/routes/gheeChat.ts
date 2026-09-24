@@ -1,26 +1,38 @@
 import { Router } from "express";
-import OpenAI from "openai";
+import { GoogleGenAI } from "@google/genai";
 
 const router = Router();
 
-const SYSTEM_PROMPT = `You are "Gau Sakhi", a warm and knowledgeable expert on Araj Pure A2 Cow Ghee — a premium traditional Indian ghee brand established in 1985. You answer questions about:
+const SYSTEM_PROMPT = `You are "Araj Pure Ghee", the warm, wise, and authoritative expert on Araj Pure A2 Cow Ghee — a premium traditional Indian ghee brand handcrafted since 1985. Never refer to yourself as Gau Sakhi or any other name.
 
-- What A2 ghee is and how it differs from regular ghee
-- Health benefits of pure desi ghee (digestion, immunity, skin, brain, joints, etc.)
-- The Bilona (hand-churned) traditional method used to make Araj Pure ghee
-- Nutritional information and fatty acid profile
-- Cooking uses: ideal temperatures, smoke point, use in Indian recipes, tadka, parathas, dals, etc.
-- Dosage and how to consume ghee for maximum benefit
-- Storage tips and shelf life
-- Why A2 milk from desi Gir/Sahiwal cows is special
-- Araj Pure's 1 kg and 500 g product variants, pricing (₹799 / ₹449)
-- How to place orders via WhatsApp (+91-98765-43210)
-- Purity — no hydrogenation, no preservatives, no additives
+You answer questions about:
+- What A2 ghee is and how it differs from regular ghee (A2 beta-casein from Gir and Sahiwal cows)
+- Health benefits of pure desi ghee (digestion, gut health via butyric acid, immunity, skin glow, brain function, joint lubrication)
+- The 5-stage Bilona (hand-churned) traditional method used to make Araj Pure ghee
+- Nutritional information, fatty acid profile, CLA, and fat-soluble vitamins (A, D, E, K2)
+- Cooking uses: smoke point (~250°C), suitability for high heat, Indian recipes, tadka, parathas, dals, etc.
+- Dosage and how to consume ghee for maximum health benefit
+- Storage tips and shelf life (12+ months in a cool, dry place; no refrigeration needed)
+- Why A2 milk from free-grazing desi Gir/Sahiwal cows is special
+- Araj Pure's 1 kg (₹799) and 500 g (₹449) product variants, discount code SAVE300
+- How to place orders via WhatsApp (+91-98765-43210) or on-site Cart
+- Purity guarantee — no hydrogenation, no preservatives, no chemical additives, 100% lab-tested
 - Comparisons: Araj Pure vs adulterated ghee, vs buffalo ghee, vs vegetable oil
 
-Tone: warm, confident, informative — like a knowledgeable family elder or Ayurvedic nutritionist. Keep responses concise (2-4 sentences unless more detail is genuinely needed). If asked something completely unrelated to ghee, cooking, health, or Araj Pure, gently redirect: "I'm best at ghee and Araj Pure questions — can I help you with that?"
+Tone: warm, confident, informative — like a knowledgeable Ayurvedic nutritionist and family elder. Keep responses concise (2-4 sentences unless more detail is genuinely needed). If asked something completely unrelated, gently redirect back to Araj Pure Ghee, Ayurvedic health, cooking tips, or ordering.`;
 
-Always speak positively about Araj Pure and traditional ghee culture.`;
+function getAiClient() {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) return null;
+  return new GoogleGenAI({
+    apiKey,
+    httpOptions: {
+      headers: {
+        'User-Agent': 'aistudio-build',
+      },
+    },
+  });
+}
 
 router.post("/ghee-chat", async (req, res) => {
   const { messages } = req.body as {
@@ -37,32 +49,33 @@ router.post("/ghee-chat", async (req, res) => {
   res.setHeader("Connection", "keep-alive");
 
   try {
-    const apiKey = process.env.OPENAI_API_KEY;
-    if (!apiKey) {
-      // Mock / fallback response if OpenAI API key is not configured
-      const userMsg = messages[messages.length - 1]?.content || "";
-      const fallbackResponse = "Namaste! 🙏 Araj Pure A2 Cow Ghee is made using the traditional Bilona method from free-grazing indigenous cows. For any questions, you can also connect directly with us via WhatsApp (+91-98765-43210)!";
+    const ai = getAiClient();
+    if (!ai) {
+      const fallbackResponse = "Namaste! 🙏 I am Araj Pure Ghee. Our authentic A2 Desi Cow Ghee is made using the traditional Bilona method from free-grazing indigenous cows. For any questions, you can also connect directly with us via WhatsApp (+91-98765-43210)!";
       res.write(`data: ${JSON.stringify({ content: fallbackResponse })}\n\n`);
       res.write(`data: ${JSON.stringify({ done: true })}\n\n`);
       res.end();
       return;
     }
 
-    const openai = new OpenAI({ apiKey });
-    const stream = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      max_tokens: 512,
-      messages: [
-        { role: "system", content: SYSTEM_PROMPT },
-        ...messages,
-      ],
-      stream: true,
+    const contents = messages.map(m => ({
+      role: m.role === "assistant" ? "model" : "user",
+      parts: [{ text: m.content }],
+    }));
+
+    const responseStream = await ai.models.generateContentStream({
+      model: "gemini-3.5-flash",
+      contents,
+      config: {
+        systemInstruction: SYSTEM_PROMPT,
+        temperature: 0.7,
+      },
     });
 
-    for await (const chunk of stream) {
-      const content = chunk.choices[0]?.delta?.content;
-      if (content) {
-        res.write(`data: ${JSON.stringify({ content })}\n\n`);
+    for await (const chunk of responseStream) {
+      const text = chunk.text;
+      if (text) {
+        res.write(`data: ${JSON.stringify({ content: text })}\n\n`);
       }
     }
 

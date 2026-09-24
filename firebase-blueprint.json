@@ -1,0 +1,46 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profiles and account data",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Unique user ID matching auth.uid" },
+        "email": { "type": "string", "description": "User email address" },
+        "displayName": { "type": "string", "description": "Full name of the user" },
+        "photoURL": { "type": "string", "description": "User avatar image URL" },
+        "createdAt": { "type": "string", "description": "Account registration timestamp" },
+        "phone": { "type": "string", "description": "Optional contact number" },
+        "address": { "type": "string", "description": "Default delivery address" }
+      },
+      "required": ["uid", "email"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer orders placed for Araj Pure A2 Cow Ghee",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "UID of customer" },
+        "userEmail": { "type": "string", "description": "Email of customer" },
+        "userName": { "type": "string", "description": "Name of customer" },
+        "quantity": { "type": "number", "description": "Number of 1kg jars" },
+        "totalAmount": { "type": "number", "description": "Total price in INR" },
+        "shippingAddress": { "type": "string", "description": "Delivery address" },
+        "phone": { "type": "string", "description": "Contact phone number" },
+        "status": { "type": "string", "description": "Status of the order" },
+        "createdAt": { "type": "string", "description": "Timestamp when order was placed" }
+      },
+      "required": ["userId", "totalAmount", "shippingAddress", "phone", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User account documents keyed by auth UID"
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Orders placed by patrons"
+    }
+  }
+}

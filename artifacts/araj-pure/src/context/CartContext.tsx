@@ -2,13 +2,14 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface CartContextType {
   quantity: number;
-  setQuantity: (q: number) => void;
+  setQuantity: React.Dispatch<React.SetStateAction<number>>;
+  addToCart: (qty?: number) => void;
   isCartOpen: boolean;
-  setIsCartOpen: (open: boolean) => void;
+  setIsCartOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isCheckoutOpen: boolean;
-  setIsCheckoutOpen: (open: boolean) => void;
+  setIsCheckoutOpen: React.Dispatch<React.SetStateAction<boolean>>;
   discountApplied: boolean;
-  setDiscountApplied: (applied: boolean) => void;
+  setDiscountApplied: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -19,9 +20,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [discountApplied, setDiscountApplied] = useState(false);
 
+  const addToCart = (qty = 1) => {
+    setQuantity((prev) => (prev > 0 ? prev + qty : qty));
+  };
+
   return (
     <CartContext.Provider value={{
       quantity, setQuantity,
+      addToCart,
       isCartOpen, setIsCartOpen,
       isCheckoutOpen, setIsCheckoutOpen,
       discountApplied, setDiscountApplied
