@@ -4,12 +4,9 @@ import tailwindcss from '@tailwindcss/vite';
 import { defineConfig, type Plugin } from 'vite';
 import { handleGeminiChat } from './server/geminiChatHandler';
 
-const rawPort = process.env.PORT ?? '3000';
-const port = Number(rawPort);
-
-if (Number.isNaN(port) || port <= 0) {
-  throw new Error(`Invalid PORT value: "${rawPort}"`);
-}
+const rawPort = process.env.PORT || '3000';
+const parsedPort = Number(rawPort);
+const port = !Number.isNaN(parsedPort) && parsedPort > 0 ? parsedPort : 3000;
 
 const basePath = process.env.BASE_PATH ?? '/';
 
