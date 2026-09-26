@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "dev": "npm run dev --workspace=@workspace/araj-pure",
-    "build": "npm run build --workspace=@workspace/araj-pure",
+    "build": "npm --prefix artifacts/araj-pure run build",
     "typecheck": "tsc -b",
     "lint": "tsc -b"
   },

@@ -56,6 +56,16 @@ function getAiClient() {
 }
 
 export async function handleGeminiChat(req: IncomingMessage, res: ServerResponse) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    res.statusCode = 200;
+    res.end();
+    return;
+  }
+
   if (req.method !== 'POST') {
     res.statusCode = 405;
     res.setHeader('Content-Type', 'application/json');
@@ -63,15 +73,9 @@ export async function handleGeminiChat(req: IncomingMessage, res: ServerResponse
     return;
   }
 
-  let bodyStr = '';
-  req.on('data', chunk => {
-    bodyStr += chunk;
-  });
-
-  req.on('end', async () => {
+  const processChat = async (parsedBody: any) => {
     try {
-      const parsed = JSON.parse(bodyStr || '{}');
-      const messages: { role: 'user' | 'assistant'; content: string }[] = parsed.messages || [];
+      const messages: { role: 'user' | 'assistant'; content: string }[] = parsedBody?.messages || [];
 
       if (!Array.isArray(messages) || messages.length === 0) {
         res.statusCode = 400;
@@ -94,9 +98,9 @@ export async function handleGeminiChat(req: IncomingMessage, res: ServerResponse
         parts: [{ text: m.content }],
       }));
 
-      // Use gemini-3.5-flash for general multi-turn tasks
+      // Use gemini-2.5-flash for general multi-turn tasks
       const response = await ai.models.generateContent({
-        model: 'gemini-3.5-flash',
+        model: 'gemini-2.5-flash',
         contents,
         config: {
           systemInstruction: SYSTEM_INSTRUCTION,
@@ -115,6 +119,31 @@ export async function handleGeminiChat(req: IncomingMessage, res: ServerResponse
       res.statusCode = 500;
       res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify({ error: message }));
+    }
+  };
+
+  // If body is already parsed by framework (e.g. Vercel, Express)
+  const existingBody = (req as any).body;
+  if (existingBody !== undefined && existingBody !== null) {
+    const parsed = typeof existingBody === 'string' ? JSON.parse(existingBody || '{}') : existingBody;
+    await processChat(parsed);
+    return;
+  }
+
+  // Otherwise read stream (e.g. raw Node HTTP / Vite middleware)
+  let bodyStr = '';
+  req.on('data', chunk => {
+    bodyStr += chunk;
+  });
+
+  req.on('end', async () => {
+    try {
+      const parsed = JSON.parse(bodyStr || '{}');
+      await processChat(parsed);
+    } catch (parseErr) {
+      res.statusCode = 400;
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify({ error: 'Invalid JSON payload' }));
     }
   });
 }
