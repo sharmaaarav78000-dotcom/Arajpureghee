@@ -98,9 +98,9 @@ export async function handleGeminiChat(req: IncomingMessage, res: ServerResponse
         parts: [{ text: m.content }],
       }));
 
-      // Use gemini-2.5-flash for general multi-turn tasks
+      // Use gemini-3.8-flash for general multi-turn chat tasks
       const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
+        model: 'gemini-3.8-flash',
         contents,
         config: {
           systemInstruction: SYSTEM_INSTRUCTION,
