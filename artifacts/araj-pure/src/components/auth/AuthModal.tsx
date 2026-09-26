@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/context/AuthContext';
-import { X, Mail, Lock, User, AlertCircle, ArrowRight } from 'lucide-react';
+import { X, Mail, Lock, User, AlertCircle, ArrowRight, ShieldAlert, Copy, Check, ExternalLink, Sparkles } from 'lucide-react';
 import logo from '@assets/ChatGPT_Image_Jul_2,_2026,_10_21_13_PM_1784571538758.png';
 
 export default function AuthModal() {
-  const { isAuthModalOpen, authModalMode, closeAuthModal, signInGoogle, signInEmail, signUpEmail } = useAuth();
-  const [mode, setMode] = useState<'login' | 'register'>(authModalMode);
+  const { isAuthModalOpen, authMode, authModalMode, closeAuthModal, signInGoogle, signInEmail, signUpEmail, signInDemoPatron } = useAuth();
+  const [mode, setMode] = useState<'login' | 'register'>(authMode || authModalMode || 'login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -14,24 +14,42 @@ export default function AuthModal() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [isDemoLoading, setIsDemoLoading] = useState(false);
+  const [isUnauthorizedDomain, setIsUnauthorizedDomain] = useState(false);
+  const [currentHostname, setCurrentHostname] = useState('');
+  const [copied, setCopied] = useState(false);
 
   // Sync mode with context
   React.useEffect(() => {
-    setMode(authModalMode);
+    setMode(authMode || authModalMode || 'login');
     setError('');
-  }, [authModalMode]);
+    setIsUnauthorizedDomain(false);
+  }, [authMode, authModalMode]);
 
   if (!isAuthModalOpen) return null;
+
+  const handleCopyDomain = () => {
+    if (currentHostname) {
+      navigator.clipboard.writeText(currentHostname);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    }
+  };
 
   const handleGoogleSignIn = async () => {
     try {
       setError('');
+      setIsUnauthorizedDomain(false);
       setIsGoogleLoading(true);
       await signInGoogle();
     } catch (err: any) {
       console.error('Google Sign In Error:', err);
       if (err.code === 'auth/popup-closed-by-user') {
         setError('Google sign-in popup was closed.');
+      } else if (err.code === 'auth/unauthorized-domain') {
+        setIsUnauthorizedDomain(true);
+        setCurrentHostname(typeof window !== 'undefined' ? window.location.hostname : '');
+        setError('Domain not authorized for Google Sign-In. Follow the guide below to authorize, or use Email / Demo sign-in.');
       } else {
         setError(err.message || 'Google sign in failed. Please try again.');
       }
@@ -40,9 +58,24 @@ export default function AuthModal() {
     }
   };
 
+  const handleDemoSignIn = async () => {
+    try {
+      setError('');
+      setIsUnauthorizedDomain(false);
+      setIsDemoLoading(true);
+      await signInDemoPatron();
+    } catch (err: any) {
+      console.error('Demo Sign In Error:', err);
+      setError(err.message || 'Demo sign in failed. Please sign in or register with email below.');
+    } finally {
+      setIsDemoLoading(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setIsUnauthorizedDomain(false);
 
     if (mode === 'register') {
       if (!name.trim()) {
@@ -151,94 +184,87 @@ export default function AuthModal() {
               </p>
             </div>
 
-            {/* Error Banner */}
-            {error && (
-              <motion.div
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-6 p-3.5 rounded-2xl bg-rose-950/40 border border-rose-500/30 flex items-start gap-2.5 text-rose-200 text-xs leading-relaxed"
-              >
-                <AlertCircle size={16} className="text-rose-400 shrink-0 mt-0.5" />
-                <span>{error}</span>
-              </motion.div>
-            )}
-
-            {/* ── 1-CLICK GMAIL / GOOGLE SIGN-IN BUTTON ── */}
-            <button
-              onClick={handleGoogleSignIn}
-              disabled={isGoogleLoading || isLoading}
-              className="w-full py-3.5 px-4 rounded-full font-sans font-medium text-xs tracking-[0.08em] flex items-center justify-center gap-3 transition-all mb-6 cursor-pointer active:scale-[0.98]"
-              style={{
-                background: '#ffffff',
-                color: '#1f1f1f',
-                boxShadow: '0 4px 18px rgba(0,0,0,0.3)',
-              }}
-            >
-              {isGoogleLoading ? (
-                <div className="w-5 h-5 border-2 border-[#1f1f1f] border-t-transparent rounded-full animate-spin" />
-              ) : (
-                <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
-                  <path
-                    fill="#4285F4"
-                    d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"
-                  />
-                  <path
-                    fill="#34A853"
-                    d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"
-                  />
-                  <path
-                    fill="#FBBC05"
-                    d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.17 0 9.99 0 12s.45 3.83 1.25 5.42l4.03-3.15z"
-                  />
-                  <path
-                    fill="#EA4335"
-                    d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"
-                  />
-                </svg>
-              )}
-              <span className="font-semibold">
-                {isGoogleLoading ? 'Connecting to Google...' : 'Continue with Google / Gmail'}
-              </span>
-            </button>
-
-            {/* Divider */}
-            <div className="flex items-center gap-3 mb-6">
-              <div className="h-[1px] flex-1 bg-[#D6B36A]/22" />
-              <span className="font-sans text-[10px] tracking-[0.2em] uppercase font-medium text-[#F5F1E8]/45">
-                or with email
-              </span>
-              <div className="h-[1px] flex-1 bg-[#D6B36A]/22" />
-            </div>
-
             {/* Switch Tabs: Login / Register */}
-            <div
-              className="flex rounded-full p-1 mb-6 bg-[#080909]/75 border border-[#D6B36A]/22"
-            >
+            <div className="flex rounded-full p-1 mb-5 bg-[#080909]/75 border border-[#D6B36A]/25 shadow-inner">
               <button
                 type="button"
-                onClick={() => { setMode('login'); setError(''); }}
-                className={`flex-1 py-2 text-xs font-sans font-semibold tracking-wider uppercase transition-all rounded-full cursor-pointer ${
+                onClick={() => { setMode('login'); setError(''); setIsUnauthorizedDomain(false); }}
+                className={`flex-1 py-2.5 text-xs font-sans font-semibold tracking-wider uppercase transition-all rounded-full cursor-pointer ${
                   mode === 'login'
-                    ? 'bg-[#D6B36A] text-[#080909] shadow'
-                    : 'text-[#F5F1E8]/60 hover:text-white'
+                    ? 'bg-gradient-to-r from-[#D6B36A] to-[#BFA05A] text-[#080909] shadow-md font-bold'
+                    : 'text-[#F5F1E8]/70 hover:text-white'
                 }`}
               >
                 Sign In
               </button>
               <button
                 type="button"
-                onClick={() => { setMode('register'); setError(''); }}
-                className={`flex-1 py-2 text-xs font-sans font-semibold tracking-wider uppercase transition-all rounded-full cursor-pointer ${
+                onClick={() => { setMode('register'); setError(''); setIsUnauthorizedDomain(false); }}
+                className={`flex-1 py-2.5 text-xs font-sans font-semibold tracking-wider uppercase transition-all rounded-full cursor-pointer ${
                   mode === 'register'
-                    ? 'bg-[#D6B36A] text-[#080909] shadow'
-                    : 'text-[#F5F1E8]/60 hover:text-white'
+                    ? 'bg-gradient-to-r from-[#D6B36A] to-[#BFA05A] text-[#080909] shadow-md font-bold'
+                    : 'text-[#F5F1E8]/70 hover:text-white'
                 }`}
               >
-                Register
+                Create Account
               </button>
             </div>
 
-            {/* Form */}
+            {/* Quick Demo Patron Banner */}
+            <div className="mb-5 p-3 rounded-2xl bg-gradient-to-br from-[#D6B36A]/15 via-[#2a1e0c]/40 to-[#080909] border border-[#D6B36A]/35 flex items-center justify-between gap-3">
+              <div className="text-left">
+                <div className="flex items-center gap-1.5 text-xs font-semibold text-[#E8D39A]">
+                  <Sparkles size={13} className="text-[#D6B36A] animate-pulse" />
+                  <span>Instant Patron Access</span>
+                </div>
+                <p className="text-[11px] text-[#F5F1E8]/75 mt-0.5">
+                  Test checkout and orders with 1-click
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={handleDemoSignIn}
+                disabled={isDemoLoading || isLoading || isGoogleLoading}
+                className="px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#D6B36A] to-[#BFA05A] hover:brightness-110 text-[#080909] font-sans font-bold text-[11px] tracking-wider uppercase shadow-md transition cursor-pointer shrink-0 disabled:opacity-50"
+              >
+                {isDemoLoading ? 'Entering...' : '1-Click Login'}
+              </button>
+            </div>
+
+            {/* Unauthorized Domain Notice (only if user explicitly clicked Google on unwhitelisted domain) */}
+            {isUnauthorizedDomain ? (
+              <motion.div
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-5 p-4 rounded-2xl bg-[#2a1b0a]/95 border border-[#D6B36A]/50 text-[#F5F1E8] text-xs leading-relaxed shadow-lg"
+              >
+                <div className="flex items-start gap-2 mb-2 font-semibold text-[#E8D39A]">
+                  <ShieldAlert size={16} className="shrink-0 mt-0.5 text-[#D6B36A]" />
+                  <span>Google Sign-In is restricted on this domain</span>
+                </div>
+                <p className="text-[#F5F1E8]/85 text-[11.5px] mb-3">
+                  Google popups require domain registration in Firebase Console. You can immediately continue using Email & Password or the 1-Click Login above without any restrictions.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setIsUnauthorizedDomain(false)}
+                  className="w-full py-2 px-3 rounded-xl bg-[#D6B36A]/20 hover:bg-[#D6B36A]/30 text-[#E8D39A] font-sans font-medium text-xs text-center transition cursor-pointer"
+                >
+                  Continue with Email & Password below
+                </button>
+              </motion.div>
+            ) : error ? (
+              <motion.div
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-5 p-3.5 rounded-2xl bg-rose-950/40 border border-rose-500/30 flex items-start gap-2.5 text-rose-200 text-xs leading-relaxed"
+              >
+                <AlertCircle size={16} className="text-rose-400 shrink-0 mt-0.5" />
+                <span>{error}</span>
+              </motion.div>
+            ) : null}
+
+            {/* Email / Password Form */}
             <form onSubmit={handleSubmit} className="space-y-4">
               {mode === 'register' && (
                 <div>
@@ -260,15 +286,29 @@ export default function AuthModal() {
               )}
 
               <div>
-                <label className="block font-sans text-[10.5px] uppercase tracking-wider mb-1.5 text-[#F5F1E8]/75">
-                  Email Address
-                </label>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="font-sans text-[10.5px] uppercase tracking-wider text-[#F5F1E8]/75">
+                    Email Address
+                  </label>
+                  {mode === 'login' && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setEmail('patron.demo@arajpure.com');
+                        setPassword('ArajPure#1985');
+                      }}
+                      className="text-[10px] text-[#D6B36A] hover:underline cursor-pointer"
+                    >
+                      Fill demo email
+                    </button>
+                  )}
+                </div>
                 <div className="relative">
                   <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#D6B36A]/70" />
                   <input
                     type="email"
                     required
-                    placeholder="name@gmail.com"
+                    placeholder="name@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full pl-10 pr-4 py-3 rounded-xl text-sm font-sans focus:outline-none transition-all text-[#F5F1E8] bg-[#080909]/65 border border-[#D6B36A]/28 focus:border-[#D6B36A]"
@@ -315,14 +355,14 @@ export default function AuthModal() {
               {/* Submit CTA */}
               <button
                 type="submit"
-                disabled={isLoading || isGoogleLoading}
+                disabled={isLoading || isGoogleLoading || isDemoLoading}
                 className="btn-capsule-gold w-full mt-3 py-3.5 px-6 font-sans font-semibold text-xs tracking-[0.22em] uppercase flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
               >
                 {isLoading ? (
                   <div className="w-5 h-5 border-2 border-[#080909] border-t-transparent rounded-full animate-spin" />
                 ) : (
                   <>
-                    <span>{mode === 'login' ? 'Sign In to Account' : 'Register Account'}</span>
+                    <span>{mode === 'login' ? 'Sign In' : 'Create My Account'}</span>
                     <ArrowRight size={14} />
                   </>
                 )}
@@ -330,7 +370,7 @@ export default function AuthModal() {
             </form>
 
             {/* Toggle Mode Footer */}
-            <div className="mt-6 text-center">
+            <div className="mt-4 text-center">
               <span className="font-sans text-xs text-[#F5F1E8]/50">
                 {mode === 'login' ? "Don't have an account yet?" : 'Already registered?'}
               </span>{' '}
@@ -339,12 +379,55 @@ export default function AuthModal() {
                 onClick={() => {
                   setMode(mode === 'login' ? 'register' : 'login');
                   setError('');
+                  setIsUnauthorizedDomain(false);
                 }}
                 className="font-sans text-xs font-semibold underline underline-offset-4 text-[#D6B36A] hover:text-[#E8D39A] transition-colors cursor-pointer"
               >
-                {mode === 'login' ? 'Register here' : 'Sign in here'}
+                {mode === 'login' ? 'Create an account' : 'Sign in here'}
               </button>
             </div>
+
+            {/* Divider */}
+            <div className="flex items-center gap-3 my-5">
+              <div className="h-[1px] flex-1 bg-[#D6B36A]/20" />
+              <span className="font-sans text-[10px] tracking-[0.2em] uppercase font-medium text-[#F5F1E8]/40">
+                or
+              </span>
+              <div className="h-[1px] flex-1 bg-[#D6B36A]/20" />
+            </div>
+
+            {/* Google Sign-In Secondary Option */}
+            <button
+              onClick={handleGoogleSignIn}
+              disabled={isGoogleLoading || isLoading || isDemoLoading}
+              className="w-full py-3 px-4 rounded-full font-sans font-medium text-xs tracking-[0.05em] flex items-center justify-center gap-3 transition-all cursor-pointer active:scale-[0.98] border border-white/20 hover:border-white/40 bg-white/95 hover:bg-white text-[#1f1f1f] shadow-sm disabled:opacity-60"
+            >
+              {isGoogleLoading ? (
+                <div className="w-4 h-4 border-2 border-[#1f1f1f] border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
+                  <path
+                    fill="#4285F4"
+                    d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"
+                  />
+                  <path
+                    fill="#34A853"
+                    d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"
+                  />
+                  <path
+                    fill="#FBBC05"
+                    d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.17 0 9.99 0 12s.45 3.83 1.25 5.42l4.03-3.15z"
+                  />
+                  <path
+                    fill="#EA4335"
+                    d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"
+                  />
+                </svg>
+              )}
+              <span className="font-semibold text-[#1f1f1f]">
+                {isGoogleLoading ? 'Connecting...' : 'Sign in with Google'}
+              </span>
+            </button>
           </div>
         </motion.div>
       </motion.div>

@@ -5,13 +5,14 @@ import {
   signInWithGoogle,
   registerWithEmail,
   loginWithEmail,
+  quickDemoSignIn,
   logOut,
   onAuthStateChanged,
   type User,
   type UserProfile,
   type OrderItem,
 } from '@/lib/firebase';
-import { doc, onSnapshot, collection, query, where, orderBy } from 'firebase/firestore';
+import { doc, getDoc, onSnapshot, collection, query, where, orderBy } from 'firebase/firestore';
 
 interface AuthContextType {
   user: User | null;
@@ -20,6 +21,7 @@ interface AuthContextType {
   loading: boolean;
   isAuthModalOpen: boolean;
   authMode: 'login' | 'register';
+  authModalMode: 'login' | 'register';
   isProfileModalOpen: boolean;
   openAuthModal: (mode?: 'login' | 'register') => void;
   closeAuthModal: () => void;
@@ -27,7 +29,9 @@ interface AuthContextType {
   signInGoogle: () => Promise<void>;
   signInEmail: (email: string, pass: string) => Promise<void>;
   signUpEmail: (email: string, pass: string, name: string) => Promise<void>;
+  signInDemoPatron: () => Promise<void>;
   signOutUser: () => Promise<void>;
+  refreshProfile?: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -115,9 +119,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     closeAuthModal();
   };
 
+  const signInDemoPatron = async () => {
+    await quickDemoSignIn();
+    closeAuthModal();
+  };
+
   const signOutUser = async () => {
     await logOut();
     setIsProfileModalOpen(false);
+  };
+
+  const refreshProfile = async () => {
+    if (!user) return;
+    const snap = await getDoc(doc(db, 'users', user.uid));
+    if (snap.exists()) {
+      setProfile(snap.data() as UserProfile);
+    }
   };
 
   return (
@@ -129,6 +146,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         loading,
         isAuthModalOpen,
         authMode,
+        authModalMode: authMode,
         isProfileModalOpen,
         openAuthModal,
         closeAuthModal,
@@ -136,7 +154,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         signInGoogle,
         signInEmail,
         signUpEmail,
+        signInDemoPatron,
         signOutUser,
+        refreshProfile,
       }}
     >
       {children}

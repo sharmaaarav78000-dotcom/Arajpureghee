@@ -27,7 +27,7 @@ import {
   type Firestore,
 } from 'firebase/firestore';
 
-import configData from '../../../../firebase-applet-config.json';
+import configData from './firebase-config.json';
 
 export const firebaseConfig = {
   projectId: configData.projectId,
@@ -117,6 +117,23 @@ export async function loginWithEmail(email: string, pass: string): Promise<User>
   const cred = await signInWithEmailAndPassword(auth, email, pass);
   await syncUserProfile(cred.user);
   return cred.user;
+}
+
+export async function quickDemoSignIn(): Promise<User> {
+  const demoEmail = 'patron.demo@arajpure.com';
+  const demoPass = 'ArajPure#1985';
+  try {
+    return await loginWithEmail(demoEmail, demoPass);
+  } catch (err: any) {
+    if (
+      err.code === 'auth/user-not-found' ||
+      err.code === 'auth/invalid-credential' ||
+      err.code === 'auth/invalid-login-credentials'
+    ) {
+      return await registerWithEmail(demoEmail, demoPass, 'Patron Guest');
+    }
+    throw err;
+  }
 }
 
 export async function logOut(): Promise<void> {
